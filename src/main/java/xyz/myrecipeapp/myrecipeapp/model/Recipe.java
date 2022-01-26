@@ -20,6 +20,7 @@ public class Recipe implements Serializable {
     private String ingredients;
     private String recipe;
     private String imageUrl;
+    @Column(nullable = false, updatable = false)
     private String recipeCode;
 
     public Recipe() {
