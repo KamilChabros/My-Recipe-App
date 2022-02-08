@@ -35,6 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.cors(); // this will solve the problem with CORS
         http.authorizeRequests()
                 .antMatchers("/").hasAnyAuthority("USER", "CREATOR", "ADMIN")
                 .antMatchers("recipe/add").hasAnyAuthority("ADMIN", "CREATOR")

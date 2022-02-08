@@ -1,5 +1,6 @@
 package xyz.myrecipeapp.myrecipeapp.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,39 +25,49 @@ public class MyUserDetailsService implements UserDetails {
         Set<Role> roles = user.getRoles();
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-        for (Role role: roles) {
+        for (Role role : roles) {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         }
         return authorities;
     }
 
     @Override
+    //because of below code, we have bad credentials error, because of null in password
+//    public String getPassword() {
+//        return null;
+//    }
+
     public String getPassword() {
-        return null;
+        return this.user.getPassword();
     }
 
     @Override
+//    public String getUsername() {
+//        return null;
+//    }
     public String getUsername() {
-        return null;
+        return this.user.getUsername();
     }
 
     @Override
+    /*if return false (in every below method) "User account is locked" will be displayed
+    at localhost in browser*/
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
