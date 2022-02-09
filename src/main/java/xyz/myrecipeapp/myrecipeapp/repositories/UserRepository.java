@@ -1,12 +1,15 @@
 package xyz.myrecipeapp.myrecipeapp.repositories;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import xyz.myrecipeapp.myrecipeapp.model.User;
 
-public interface UserRepository extends CrudRepository<User, Long> {
+import java.util.Optional;
 
-    @Query("SELECT u FROM User u WHERE u.username = :username")
-    public User getUserByUsername(@Param("username") String username);
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    Optional<User> findByUsername(String name);
+    Boolean existsByUsername (String username);
+    Boolean existsByEmail (String email);
 }

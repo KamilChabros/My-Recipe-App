@@ -3,17 +3,21 @@ package xyz.myrecipeapp.myrecipeapp.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name="roles")
+@Table(name = "roles")
 public class Role {
-
     @Id
-    @Column(name = "role_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String name;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private ERole name;
 
     public Role() {
+    }
+
+    public Role(ERole name) {
+        this.name = name;
     }
 
     public Integer getId() {
@@ -24,15 +28,11 @@ public class Role {
         this.id = id;
     }
 
-    public String getName() {
+    public ERole getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(ERole name) {
         this.name = name;
-    }
-
-    public Role(Integer id) {
-        this.id = id;
     }
 }
