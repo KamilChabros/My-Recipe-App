@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import xyz.myrecipeapp.myrecipeapp.security.jwt.AuthEntryPointJwt;
 import xyz.myrecipeapp.myrecipeapp.security.jwt.AuthTokenFilter;
 import xyz.myrecipeapp.myrecipeapp.services.UserDetailsServiceImpl;
@@ -65,12 +66,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("recipe/add").hasAnyAuthority("ADMIN", "CREATOR")
 //                .antMatchers("recipe/update").hasAnyAuthority("ADMIN", "CREATOR")
 //                .antMatchers("recipe/delete/{id}").hasAnyAuthority("ADMIN")
-                .anyRequest().authenticated()
-                .and()
-                .formLogin().permitAll()
-                .and()
-                .logout().permitAll()
-                .and()
-                .exceptionHandling().accessDeniedPage("/403");
+                .anyRequest().authenticated();
+//                .and()
+//                .formLogin().permitAll()
+//                .and()
+//                .logout().permitAll()
+//                .and()
+//                .exceptionHandling().accessDeniedPage("/403");
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }
