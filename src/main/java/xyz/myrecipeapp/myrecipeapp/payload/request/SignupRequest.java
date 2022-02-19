@@ -37,7 +37,7 @@ public class SignupRequest {
     }
 
     public Set<String> getRole() {
-        return role;
+        return this.role;
     }
 
     public void setRole(Set<String> role) {

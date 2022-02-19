@@ -29,8 +29,14 @@ public class TestController {
     }
 
     @GetMapping("/editor")
-    @PreAuthorize("hasRole('EDITOR')")
+    @PreAuthorize("hasRole('EDITOR') or hasRole('ADMIN')")
     public String editorAccess() {
         return "Editor Board.";
+    }
+
+    @GetMapping("/creator")
+    @PreAuthorize("hasRole('CREATOR') or hasRole('ADMIN')")
+    public String creatorAccess() {
+        return "Creator Board.";
     }
 }
