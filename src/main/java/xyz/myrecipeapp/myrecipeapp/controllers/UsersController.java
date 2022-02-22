@@ -11,6 +11,7 @@ import xyz.myrecipeapp.myrecipeapp.model.ERole;
 import xyz.myrecipeapp.myrecipeapp.model.Role;
 import xyz.myrecipeapp.myrecipeapp.model.User;
 import xyz.myrecipeapp.myrecipeapp.payload.request.SignupRequest;
+import xyz.myrecipeapp.myrecipeapp.payload.request.UpdateRequest;
 import xyz.myrecipeapp.myrecipeapp.payload.response.MessageResponse;
 import xyz.myrecipeapp.myrecipeapp.repositories.RoleRepository;
 import xyz.myrecipeapp.myrecipeapp.repositories.UserRepository;
@@ -23,6 +24,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/users")
+@Transactional
 public class UsersController {
 
     private final UsersService usersService;
@@ -105,13 +107,90 @@ public class UsersController {
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
-    // Not working :/ Duplicate entry 'admin' for key
-    @PutMapping("/update")
+    /*Not working :/ Duplicate entry 'admin' for key
+    Working after deleting uniqueConstraints from User model class - Table annotation
+    Working adding roles, change anything in fields not working
+    Consider to add validating username & email*/
+    @PutMapping("/update/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<User> updateUser(@RequestBody User user) {
-        User updateUser = usersService.addUser(user);
-        return new ResponseEntity<>(updateUser, HttpStatus.OK);
+    public ResponseEntity<User> updateUser(@RequestBody UpdateRequest updateRequest, @PathVariable("id") Long id) {
+        User updatedUser = usersService.findUserById(id);
+        Set<String> strRoles = updateRequest.getRole();
+        Set<Role> roles = new HashSet<>();
+        if (strRoles == null) {
+            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
+            roles.add(userRole);
+        }
+        else {
+            strRoles.forEach(role -> {
+                switch (role) {
+                    case "admin":
+                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
+                        roles.add(adminRole);
+                        break;
+                    case "creator":
+                        Role creatorRole = roleRepository.findByName(ERole.ROLE_CREATOR)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
+                        roles.add(creatorRole);
+                        break;
+                    case "editor":
+                        Role editorRole = roleRepository.findByName(ERole.ROLE_EDITOR)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
+                        roles.add(editorRole);
+                        break;
+                    default:
+                        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
+                        roles.add(userRole);
+                }
+            });
+        }
+        String strUsername = updateRequest.getUsername();
+        updatedUser.setUsername(strUsername);
+        String strEmail = updateRequest.getEmail();
+        updatedUser.setEmail(strEmail);
+        encoder.encode(updatedUser.getPassword());
+        updatedUser.setRoles(roles);
+        userRepository.save(updatedUser);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
+//    public ResponseEntity<User> updateUser(@RequestBody User user) {
+//        User updateUser = usersService.updateUser(user);
+//        Set<Role> strRoles = user.getRoles();
+//        Set<Role> roles = new HashSet<>();
+//        if (strRoles == null) {
+//            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+//                    .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
+//            roles.add(userRole);
+//        } else {
+//            strRoles.forEach(role -> {
+//                switch (role) {
+//                    case "admin":
+//                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
+//                        roles.add(adminRole);
+//                        break;
+//                    case "creator":
+//                        Role creatorRole = roleRepository.findByName(ERole.ROLE_CREATOR)
+//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
+//                        roles.add(creatorRole);
+//                        break;
+//                    case "editor":
+//                        Role editorRole = roleRepository.findByName(ERole.ROLE_EDITOR)
+//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
+//                        roles.add(editorRole);
+//                        break;
+//                    default:
+//                        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
+//                        roles.add(userRole);
+//                }
+//            });
+//        }
+//        return new ResponseEntity<>(updateUser, HttpStatus.OK);
+//    }
 
     // Working ;)
     @DeleteMapping("/delete/{username}")
