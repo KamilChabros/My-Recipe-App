@@ -7,7 +7,6 @@ import xyz.myrecipeapp.myrecipeapp.model.User;
 import xyz.myrecipeapp.myrecipeapp.repositories.UserRepository;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class UsersService {
@@ -19,16 +18,8 @@ public class UsersService {
         this.userRepository = userRepository;
     }
 
-    public User addUser(User user) {
-        return userRepository.save(user);
-    }
-
     public List<User> findAllUsers() {
         return userRepository.findAll();
-    }
-
-    public User updateUser(User user) {
-        return userRepository.save(user);
     }
 
     public User findUserByUsername(String username) {
@@ -40,9 +31,6 @@ public class UsersService {
                 .orElseThrow(()-> new MyUserNotFoundException("User by id " + id + " was not found!"));
     }
 
-//    public void deleteUser(String username) {
-//        userRepository.deleteUserByUsername(username);
-//    }
     public void deleteUser(Long id) {
         userRepository.deleteUserById(id);
     }

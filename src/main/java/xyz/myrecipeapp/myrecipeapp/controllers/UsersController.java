@@ -162,6 +162,11 @@ public class UsersController {
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
+        if (!userRepository.existsById(id)){
+            return ResponseEntity
+            .badRequest()
+            .body(new MessageResponse("User with id " + id + " was not found!"));
+        }
         usersService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
