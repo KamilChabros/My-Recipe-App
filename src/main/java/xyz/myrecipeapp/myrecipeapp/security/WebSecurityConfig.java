@@ -61,21 +61,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-//                .antMatchers("api/auth/**").permitAll()
                 .antMatchers("api/test/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
-//                .antMatchers("api/auth/signup").permitAll()
-//                .antMatchers("recipe/all").hasAnyAuthority("USER", "CREATOR", "ADMIN")
-//                .antMatchers("recipe/add").hasAnyAuthority("ADMIN", "CREATOR")
-//                .antMatchers("recipe/update").hasAnyAuthority("ADMIN", "CREATOR")
-//                .antMatchers("recipe/delete/{id}").hasAnyAuthority("ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/test/all").permitAll()
                 .anyRequest().authenticated();
-//                .and()
-//                .formLogin().permitAll()
-//                .and()
-//                .logout().permitAll()
-//                .and()
-//                .exceptionHandling().accessDeniedPage("/403");
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }
