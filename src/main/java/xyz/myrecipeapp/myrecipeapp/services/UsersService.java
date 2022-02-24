@@ -40,7 +40,10 @@ public class UsersService {
                 .orElseThrow(()-> new MyUserNotFoundException("User by id " + id + " was not found!"));
     }
 
-    public void deleteUser(String username) {
-        userRepository.deleteUserByUsername(username);
+//    public void deleteUser(String username) {
+//        userRepository.deleteUserByUsername(username);
+//    }
+    public void deleteUser(Long id) {
+        userRepository.deleteUserById(id);
     }
 }

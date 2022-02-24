@@ -40,6 +40,7 @@ public class UsersController {
         this.usersService = usersService;
     }
 
+    // Working ;)
     @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<User>> getAllUsers() {
@@ -47,6 +48,7 @@ public class UsersController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    // Working ;)
     @GetMapping("/find/{username}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> getUserByUsername(@PathVariable("username") String username) {
@@ -109,8 +111,7 @@ public class UsersController {
 
     /*Not working :/ Duplicate entry 'admin' for key
     Working after deleting uniqueConstraints from User model class - Table annotation
-    Working adding roles, change anything in fields not working
-    Consider to add validating username & email*/
+    */
     @PutMapping("/update/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> updateUser(@RequestBody UpdateRequest updateRequest, @PathVariable("id") Long id) {
@@ -156,48 +157,12 @@ public class UsersController {
         userRepository.save(updatedUser);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
-//    public ResponseEntity<User> updateUser(@RequestBody User user) {
-//        User updateUser = usersService.updateUser(user);
-//        Set<Role> strRoles = user.getRoles();
-//        Set<Role> roles = new HashSet<>();
-//        if (strRoles == null) {
-//            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-//                    .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
-//            roles.add(userRole);
-//        } else {
-//            strRoles.forEach(role -> {
-//                switch (role) {
-//                    case "admin":
-//                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
-//                        roles.add(adminRole);
-//                        break;
-//                    case "creator":
-//                        Role creatorRole = roleRepository.findByName(ERole.ROLE_CREATOR)
-//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
-//                        roles.add(creatorRole);
-//                        break;
-//                    case "editor":
-//                        Role editorRole = roleRepository.findByName(ERole.ROLE_EDITOR)
-//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
-//                        roles.add(editorRole);
-//                        break;
-//                    default:
-//                        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
-//                        roles.add(userRole);
-//                }
-//            });
-//        }
-//        return new ResponseEntity<>(updateUser, HttpStatus.OK);
-//    }
 
     // Working ;)
-    @DeleteMapping("/delete/{username}")
+    @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    @Transactional
-    public ResponseEntity<?> deleteUser(@PathVariable("username") String username) {
-        usersService.deleteUser(username);
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
+        usersService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
