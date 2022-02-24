@@ -40,23 +40,18 @@ public class UsersController {
         this.usersService = usersService;
     }
 
-    // Working ;)
     @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = usersService.findAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
-
-    // Working ;)
     @GetMapping("/find/{username}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> getUserByUsername(@PathVariable("username") String username) {
         User users = usersService.findUserByUsername(username);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
-
-    // Working ;)
     @PostMapping("/add")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> addUser(@Valid @RequestBody SignupRequest signupRequest) {
@@ -116,6 +111,9 @@ public class UsersController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> updateUser(@RequestBody UpdateRequest updateRequest, @PathVariable("id") Long id) {
         User updatedUser = usersService.findUserById(id);
+        if (updatedUser == null){
+            throw new RuntimeException("User with id " + id + " was not found!");
+        }
         Set<String> strRoles = updateRequest.getRole();
         Set<Role> roles = new HashSet<>();
         if (strRoles == null) {
@@ -157,8 +155,6 @@ public class UsersController {
         userRepository.save(updatedUser);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
-
-    // Working ;)
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
