@@ -24,7 +24,7 @@ public class MyrecipeappApplication {
 	public CorsFilter corsFilter(){
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
 		corsConfiguration.setAllowCredentials(true);
-		corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4201"));
+		corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:8081")); // url port same as in angular serve open port
 		corsConfiguration.setAllowedHeaders(Arrays.asList("Origin", "Access-Control-Allow-Origin", "Content-Type",
 				"Accept", "Authorization", "Origin, Accept", "X-Requested-With",
 				"Access-Control-Allow-Origin", "Access-Control=-Allow-Origin", "Access-Control-Allow-Credentials"));
