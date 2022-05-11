@@ -5,11 +5,19 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import xyz.myrecipeapp.myrecipeapp.services.DemoService;
+
 
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RestController
 @RequestMapping("/api/test")
+@RestController
 public class TestController {
+
+    private final DemoService demoService;
+
+    public TestController(DemoService demoService) {
+        this.demoService = demoService;
+    }
 
     @GetMapping("/all")
     public String allAccess() {
@@ -23,9 +31,13 @@ public class TestController {
     }
 
     @GetMapping("/admin")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
+    // With anonymous role works, but every role can show admin board,
+    // as authority is set to anonymous
+//    @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
     public String adminAccess() {
-        return "Admin Board.";
+        return demoService.test();
+//        return "Admin Board.";
     }
 
     @GetMapping("/editor")
@@ -40,3 +52,4 @@ public class TestController {
         return "Creator Board.";
     }
 }
+

@@ -3,6 +3,7 @@ package xyz.myrecipeapp.myrecipeapp.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,12 +21,13 @@ import xyz.myrecipeapp.myrecipeapp.services.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
+//@EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableGlobalMethodSecurity(
-//        securedEnabled = true,
-//        jsr250Enabled = true,
-        prePostEnabled = true)
+        prePostEnabled = true
+//        securedEnabled = true
+//proxyTargetClass = true
+)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
     @Autowired
     UserDetailsServiceImpl userDetailsServiceImpl;
     @Autowired
@@ -56,19 +58,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // http.cors solve the problem with CORS in browser
         http.cors().and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET,"api/test/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/test/all").permitAll()
+//                .antMatchers(HttpMethod.GET, "/api/test/admin").hasAnyRole("ADMIN", "USER")
+//                .antMatchers(HttpMethod.GET, "/api/test/creator").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.GET, "/api/test/editor").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.PUT, "/recipe/update").permitAll()
                 .antMatchers(HttpMethod.GET, "/recipe/all").permitAll()
-                .antMatchers(HttpMethod.GET, "/recipe/find/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/recipe/update/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/recipe/add").permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
+                .and()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }
+
