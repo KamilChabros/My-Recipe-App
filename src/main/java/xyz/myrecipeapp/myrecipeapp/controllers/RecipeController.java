@@ -14,6 +14,8 @@ import java.util.List;
 @RequestMapping("/recipe")
 public class RecipeController {
 
+    /*service for favourites
+    * adding to account*/
     private final RecipeService recipeService;
 
     public RecipeController(RecipeService recipeService) {
@@ -34,19 +36,21 @@ public class RecipeController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('CREATOR') or hasRole('ADMIN')")
     public ResponseEntity<Recipe> addRecipe(@RequestBody Recipe recipe) {
         Recipe newRecipe = recipeService.addRecipe(recipe);
         return new ResponseEntity<>(newRecipe, HttpStatus.CREATED);
     }
 
     @PutMapping("/update")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('EDITOR')")
     public ResponseEntity<Recipe> updateRecipe(@RequestBody Recipe recipe) {
         Recipe updateRecipe = recipeService.addRecipe(recipe);
         return new ResponseEntity<>(updateRecipe, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     public ResponseEntity<?> deleteRecipe(@PathVariable("id") Long id) {
         recipeService.deleteRecipe(id);
