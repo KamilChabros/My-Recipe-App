@@ -24,6 +24,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/users")
+@PreAuthorize("hasRole('ADMIN')")
 @Transactional
 public class UsersController {
 
@@ -41,19 +42,16 @@ public class UsersController {
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = usersService.findAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
     @GetMapping("/find/{username}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> getUserByUsername(@PathVariable("username") String username) {
         User users = usersService.findUserByUsername(username);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
     @PostMapping("/add")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> addUser(@Valid @RequestBody SignupRequest signupRequest) {
         if (userRepository.existsByUsername(signupRequest.getUsername())) {
             return ResponseEntity
@@ -108,7 +106,6 @@ public class UsersController {
     Working after deleting uniqueConstraints from User model class - Table annotation
     */
     @PutMapping("/update/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> updateUser(@RequestBody UpdateRequest updateRequest, @PathVariable("id") Long id) {
         User updatedUser = usersService.findUserById(id);
         if (updatedUser == null){
@@ -156,7 +153,6 @@ public class UsersController {
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
         if (!userRepository.existsById(id)){
             return ResponseEntity
