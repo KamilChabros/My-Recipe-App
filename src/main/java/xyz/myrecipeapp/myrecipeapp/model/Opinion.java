@@ -18,8 +18,9 @@ public class Opinion implements Serializable {
     public Opinion() {
     }
 
-    public Opinion(Long id, String rating, String content, String date) {
+    public Opinion(Long id, String user, String rating, String content, String date) {
         this.id = id;
+        this.user = user;
         this.rating = rating;
         this.content = content;
         this.date = date;
@@ -55,5 +56,13 @@ public class Opinion implements Serializable {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 }
