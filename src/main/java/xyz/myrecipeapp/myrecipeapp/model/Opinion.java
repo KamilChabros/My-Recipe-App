@@ -10,6 +10,7 @@ public class Opinion implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String user;
     private String rating;
     private String content;
     private String date;
