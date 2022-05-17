@@ -4,39 +4,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xyz.myrecipeapp.myrecipeapp.exceptions.RecipeNotFoundException;
 import xyz.myrecipeapp.myrecipeapp.model.Recipe;
-import xyz.myrecipeapp.myrecipeapp.repositories.RecipeRepo;
+import xyz.myrecipeapp.myrecipeapp.repositories.RecipeRepository;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class RecipeService {
-    private final RecipeRepo recipeRepo;
+    private final RecipeRepository recipeRepository;
 
     @Autowired
-    public RecipeService(RecipeRepo recipeRepo) {
-        this.recipeRepo = recipeRepo;
+    public RecipeService(RecipeRepository recipeRepository) {
+        this.recipeRepository = recipeRepository;
     }
 
     public Recipe addRecipe(Recipe recipe) {
         recipe.setRecipeCode(UUID.randomUUID().toString());
-        return recipeRepo.save(recipe);
+        return recipeRepository.save(recipe);
     }
 
     public List<Recipe> findAllRecipes() {
-        return recipeRepo.findAll();
+        return recipeRepository.findAll();
     }
 
     public Recipe updateRecipe(Recipe recipe) {
-        return recipeRepo.save(recipe);
+        return recipeRepository.save(recipe);
     }
 
     public Recipe findRecipeById(Long id) {
-        return recipeRepo.findRecipeById(id)
+        return recipeRepository.findRecipeById(id)
                 .orElseThrow(()-> new RecipeNotFoundException("Recipe by id " + id + " was not found!"));
     }
 
     public void deleteRecipe(Long id) {
-        recipeRepo.deleteRecipeById(id);
+        recipeRepository.deleteRecipeById(id);
     }
 }

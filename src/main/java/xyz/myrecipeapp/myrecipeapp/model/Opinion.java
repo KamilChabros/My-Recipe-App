@@ -10,21 +10,21 @@ public class Opinion implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String user;
+    private User user;
     private String rating;
     private String content;
     private String date;
 
-    public Opinion() {
-    }
-
-    public Opinion(Long id, String user, String rating, String content, String date) {
-        this.id = id;
-        this.user = user;
-        this.rating = rating;
-        this.content = content;
-        this.date = date;
-    }
+//    public Opinion() {
+//    }
+//
+//    public Opinion(Long id, User user, String rating, String content, String date) {
+//        this.id = id;
+//        this.user = user;
+//        this.rating = rating;
+//        this.content = content;
+//        this.date = date;
+//    }
 
     public Long getId() {
         return id;
@@ -58,11 +58,11 @@ public class Opinion implements Serializable {
         this.date = date;
     }
 
-    public String getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(String user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }
