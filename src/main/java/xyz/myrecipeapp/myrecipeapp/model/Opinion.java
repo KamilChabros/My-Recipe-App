@@ -2,7 +2,10 @@ package xyz.myrecipeapp.myrecipeapp.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 
+/*Not using lombok, cause of problems with
+* relation ManyToOne may occur*/
 @Entity
 @Table(name = "opinion")
 public class Opinion implements Serializable {
@@ -10,21 +13,12 @@ public class Opinion implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private User user;
-    private String rating;
+    @ManyToOne
+    private User user; // import User from model package?
+    @Enumerated(EnumType.STRING) // default are numbers 1 - OK,2 - NOK,etc.
+    private ERating rating; //changed from String to ERating
     private String content;
-    private String date;
-
-//    public Opinion() {
-//    }
-//
-//    public Opinion(Long id, User user, String rating, String content, String date) {
-//        this.id = id;
-//        this.user = user;
-//        this.rating = rating;
-//        this.content = content;
-//        this.date = date;
-//    }
+    private ZonedDateTime lastEditDate; //changed from String to ZonedDateTime
 
     public Long getId() {
         return id;
@@ -34,11 +28,11 @@ public class Opinion implements Serializable {
         this.id = id;
     }
 
-    public String getRating() {
+    public ERating getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(ERating rating) {
         this.rating = rating;
     }
 
@@ -50,12 +44,12 @@ public class Opinion implements Serializable {
         this.content = content;
     }
 
-    public String getDate() {
-        return date;
+    public ZonedDateTime getLastEditDate() {
+        return lastEditDate;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setLastEditDate(ZonedDateTime lastEditDate) {
+        this.lastEditDate = lastEditDate;
     }
 
     public User getUser() {

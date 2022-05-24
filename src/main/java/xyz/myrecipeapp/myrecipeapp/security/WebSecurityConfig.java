@@ -3,7 +3,6 @@ package xyz.myrecipeapp.myrecipeapp.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -21,11 +20,8 @@ import xyz.myrecipeapp.myrecipeapp.services.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
-//@EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableGlobalMethodSecurity(
         prePostEnabled = true
-//        securedEnabled = true
-//proxyTargetClass = true
 )
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
@@ -61,11 +57,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/test/all").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/test/admin").hasAnyRole("ADMIN", "USER")
-//                .antMatchers(HttpMethod.GET, "/api/test/creator").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.GET, "/api/test/editor").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.PUT, "/recipe/update").permitAll()
                 .antMatchers(HttpMethod.GET, "/recipe/all").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/opinions").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)

@@ -10,7 +10,7 @@ import xyz.myrecipeapp.myrecipeapp.services.OpinionService;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/opinions")
+@RequestMapping("/api/opinions")
 public class OpinionController {
 
     private OpinionService opinionService;

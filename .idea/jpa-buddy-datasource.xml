@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JpbDataSourceConfig">
+    <data-sources>
+      <data-source id="538a32c7-cef7-47ed-a1bc-97644f8b3402" name="My-Recipe-App-temp4" url="jdbc:mysql://localhost:3306/myrecipeapp?useSSL=false&amp;allowMultiQueries=true&amp;serverTimezone=UTC" driverClass="com.mysql.cj.jdbc.Driver" />
+    </data-sources>
+    <data-source-infos>
+      <data-source-info id="538a32c7-cef7-47ed-a1bc-97644f8b3402" persistence-unit-name="Default" />
+    </data-source-infos>
+  </component>
+</project>
