@@ -1,5 +1,5 @@
-﻿id;user_id;rating;content;last_edit_date
-1;1;OK;2022-05-16 21:07:00;Najlepsze szpagetti jakie jadłem :D
-2;3;OK;2022-05-16 21:08:00;Klasyka w najlepszym wydaniu
-3;17;NOK;2022-05-16 21:09:00;Takie średnie bym powiedział
-4;4;OK;2022-05-16 21:10:00;Polecam, bardzo smaczne ;)
+﻿id;content;last_edit_date;rating;user_id
+1;Najlepsze szpagetti jakie jadłem :D;2022-05-16 21:07:00;OK;21
+2;Klasyka w najlepszym wydaniu;2022-05-16 21:08:00;OK;22
+3;Takie średnie bym powiedział;2022-05-16 21:09:00;NOK;23
+4;Polecam, bardzo smaczne;2022-05-16 21:10:00;OK;24

@@ -12,6 +12,6 @@ public class OpinionDto {
 
     private String username;
     private ERating rating;
-    private String content;
     private ZonedDateTime date;
+    private String content;
 }

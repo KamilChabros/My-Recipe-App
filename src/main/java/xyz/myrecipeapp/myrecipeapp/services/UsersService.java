@@ -24,11 +24,11 @@ public class UsersService {
 
     public User findUserByUsername(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(()-> new MyUserNotFoundException("User by username " + username + " was not found!"));
+                .orElseThrow(()-> new MyUserNotFoundException("User with username " + username + " was not found!"));
     }
     public User findUserById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(()-> new MyUserNotFoundException("User by id " + id + " was not found!"));
+                .orElseThrow(()-> new MyUserNotFoundException("User with id " + id + " was not found!"));
     }
 
     public void deleteUser(Long id) {

@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 public class OpinionDtoConverter {
     public OpinionDto convertToDto(Opinion opinion) {
         OpinionDto dto = new OpinionDto();
-        dto.setContent(opinion.getContent());
-        dto.setDate(opinion.getLastEditDate());
         dto.setUsername(opinion.getUser().getUsername());
         dto.setRating(opinion.getRating());
+        dto.setDate(opinion.getLastEditDate());
+        dto.setContent(opinion.getContent());
         return dto;
     }
 
