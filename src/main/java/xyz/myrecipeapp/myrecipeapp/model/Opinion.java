@@ -14,11 +14,21 @@ public class Opinion implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    private User user; // import User from model package?
+    private User user;
+    @ManyToOne
+    private Recipe recipe;
     @Enumerated(EnumType.STRING) // default are numbers 1 - OK,2 - NOK,etc.
-    private ERating rating; //changed from String to ERating
+    private ERating rating;
     private String content;
-    private ZonedDateTime lastEditDate; //changed from String to ZonedDateTime
+    private ZonedDateTime lastEditDate;
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
 
     public Long getId() {
         return id;

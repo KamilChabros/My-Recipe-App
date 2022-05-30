@@ -22,14 +22,18 @@ public class OpinionController {
         this.opinionService = opinionService;
     }
 
-    @GetMapping("/all") //??
+    @GetMapping("/all")
     public ResponseEntity<List<OpinionDto>> getAllOpinions(){
         List<OpinionDto> opinions = opinionService.findAllOpinions();
         return new ResponseEntity<>(opinions, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}") //??
+    @GetMapping("/{id}") // for admin panel?
     public List<OpinionDto> getOpinionById(@PathVariable("id") Long id) {
         return opinionService.findByOpinionId(id);
+    }
+    @GetMapping("/opinionByRecipeId/{id}")
+    public List<OpinionDto> getOpinionByRecipeId (@PathVariable("id") Long id) {
+        return opinionService.findOpinionByRecipeId(id);
     }
 }
